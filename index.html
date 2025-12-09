@@ -3,1638 +3,1341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetas Saludables - La Manzana Prohibida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Recetas Gourmet</title>
     <style>
-        :root {
-            --coral: #FF7F50;
-            --coral-light: #FFA07A;
-            --coral-dark: #E85A4F;
-            --teal: #40E0D0;
-            --teal-light: #7FFFD4;
-            --teal-dark: #20B2AA;
-            --white: #FFFFFF;
-            --gray-light: #F5F5F5;
-            --gray-medium: #CCCCCC;
-            --gray-dark: #333333;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1.6;
-            color: var(--gray-dark);
-            background-color: var(--gray-light);
+            background-color: #f5f5f5;
+            padding: 20px;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
         }
         
-        header {
-            background: linear-gradient(135deg, var(--coral), var(--teal));
-            color: var(--white);
-            padding: 2rem 0;
+        .header {
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff7f50, #ff6347);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
         
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .search-section {
-            background-color: var(--white);
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--gray-medium);
-        }
-        
-        .search-container {
+        .categories {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem;
-        }
-        
-        .search-input {
-            width: 100%;
-            max-width: 500px;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--teal-light);
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .search-input:focus {
-            border-color: var(--teal);
-        }
-        
-        .filter-section {
-            background-color: var(--white);
-            padding: 1rem 0 1.5rem;
-            border-bottom: 1px solid var(--gray-medium);
-        }
-        
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            gap: 1rem;
         }
         
-        .filter-btn {
-            background-color: var(--teal-light);
-            color: var(--gray-dark);
+        .category-btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
             border-radius: 25px;
             cursor: pointer;
+            font-size: 1em;
             transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
-        .filter-btn:hover, .filter-btn.active {
-            background-color: var(--teal);
-            color: var(--white);
+        .category-btn:hover {
+            background: #45a049;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .recipes-count {
-            text-align: center;
-            margin: 1rem 0;
-            color: var(--gray-dark);
-            font-weight: 500;
+        .category-btn.active {
+            background: #ff7f50;
         }
         
-        .recipes-section {
-            padding: 2rem 0;
-        }
-        
-        .recipes-grid {
+        .recipe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
         }
         
         .recipe-card {
-            background-color: var(--white);
-            border-radius: 10px;
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 1;
-            transform: scale(1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            display: none;
         }
         
-        .recipe-card.hidden {
-            display: none;
+        .recipe-card.show {
+            display: block;
         }
         
         .recipe-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
         
         .recipe-header {
-            background: linear-gradient(135deg, var(--coral-light), var(--coral));
-            color: var(--white);
-            padding: 1rem;
-            position: relative;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            text-align: center;
         }
         
         .recipe-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .recipe-category {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
+            font-size: 1.8em;
+            margin-bottom: 5px;
         }
         
         .recipe-content {
-            padding: 1.5rem;
+            padding: 20px;
         }
         
-        .recipe-ingredients {
-            margin-bottom: 1.5rem;
+        .ingredients, .preparation {
+            margin-bottom: 20px;
         }
         
-        .recipe-ingredients h3 {
-            color: var(--teal-dark);
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
+        .ingredients h3, .preparation h3 {
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
         }
         
-        .recipe-ingredients h3 i {
-            margin-right: 0.5rem;
-        }
-        
-        .ingredients-list {
+        .ingredients ul, .preparation ul {
             list-style-type: none;
-            max-height: 200px;
-            overflow-y: auto;
-            padding-right: 5px;
         }
         
-        .ingredients-list li {
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem;
+        .ingredients li, .preparation li {
+            margin-bottom: 8px;
+            padding-left: 20px;
             position: relative;
         }
         
-        .ingredients-list li:before {
+        .ingredients li:before, .preparation li:before {
             content: "•";
-            color: var(--coral);
+            color: #4CAF50;
             font-weight: bold;
             position: absolute;
             left: 0;
         }
         
-        .recipe-preparation {
-            margin-bottom: 1.5rem;
-        }
-        
-        .recipe-preparation h3 {
-            color: var(--teal-dark);
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .recipe-preparation h3 i {
-            margin-right: 0.5rem;
-        }
-        
-        .preparation-steps {
-            list-style-type: none;
-            max-height: 200px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        
-        .preparation-steps li {
-            margin-bottom: 0.8rem;
-            padding-left: 2rem;
-            position: relative;
-        }
-        
-        .preparation-steps li:before {
-            content: "✓";
-            color: var(--coral);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-        
-        .recipe-nutrition {
-            background-color: var(--gray-light);
-            padding: 1rem;
+        .nutrition {
+            background: #f9f9f9;
+            padding: 15px;
             border-radius: 8px;
+            margin-top: 15px;
         }
         
-        .recipe-nutrition h3 {
-            color: var(--teal-dark);
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
+        .nutrition h4 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .nutrition-data {
             display: flex;
-            align-items: center;
-        }
-        
-        .recipe-nutrition h3 i {
-            margin-right: 0.5rem;
-        }
-        
-        .nutrition-info {
-            display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            text-align: center;
         }
         
         .nutrition-item {
-            text-align: center;
-        }
-        
-        .nutrition-value {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--coral-dark);
+            padding: 5px;
         }
         
         .nutrition-label {
-            font-size: 0.8rem;
-            color: var(--gray-dark);
+            font-weight: bold;
+            color: #555;
         }
         
-        .recipe-footer {
-            background-color: var(--gray-light);
-            padding: 0.8rem 1.5rem;
-            font-size: 0.8rem;
-            color: var(--gray-dark);
-            text-align: center;
+        .nutrition-value {
+            font-size: 1.2em;
+            color: #4CAF50;
         }
         
-        .view-recipe-btn {
-            display: block;
+        .recipe-image {
             width: 100%;
-            padding: 0.8rem;
-            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-            color: var(--white);
-            border: none;
-            border-radius: 0 0 10px 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        
-        .view-recipe-btn:hover {
-            background: linear-gradient(135deg, var(--teal-dark), var(--teal));
-        }
-        
-        footer {
-            background: linear-gradient(135deg, var(--coral), var(--teal));
-            color: var(--white);
-            padding: 2rem 0;
-            text-align: center;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 4px solid #4CAF50;
         }
         
         .contact-info {
-            margin-bottom: 1rem;
-        }
-        
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .social-icons a {
-            color: var(--white);
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .social-icons a:hover {
-            transform: scale(1.2);
-        }
-        
-        .no-results {
             text-align: center;
-            padding: 3rem 0;
-            color: var(--gray-dark);
-            font-size: 1.2rem;
-            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #333;
+            color: white;
+            border-radius: 10px;
         }
         
-        .no-results i {
-            font-size: 3rem;
-            color: var(--coral);
-            margin-bottom: 1rem;
+        .contact-info h3 {
+            margin-bottom: 10px;
         }
         
-        @media (max-width: 768px) {
-            .recipes-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .filter-buttons {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-            }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        
+        .decorative {
+            position: relative;
+        }
+        
+        .decorative::before {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 40px;
+            background: #4CAF50;
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Recetas Saludables</h1>
-            <p>Deliciosas y nutritivas recetas de La Manzana Prohibida</p>
+    <div class="container">
+        <div class="header">
+            <h1>Recetas Gourmet</h1>
+            <p>Una colección de platos deliciosos y saludables</p>
         </div>
-    </header>
-    
-    <section class="search-section">
-        <div class="container">
-            <div class="search-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Buscar recetas por nombre o ingrediente...">
-            </div>
+        
+        <div class="categories">
+            <button class="category-btn active" data-category="all">Todas</button>
+            <button class="category-btn" data-category="carne">Carne</button>
+            <button class="category-btn" data-category="pescado">Pescado</button>
+            <button class="category-btn" data-category="vegetal">Vegetal</button>
+            <button class="category-btn" data-category="mixtas">Mixtas</button>
         </div>
-    </section>
-    
-    <section class="filter-section">
-        <div class="container">
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">
-                    <i class="fas fa-border-all"></i> Todas
-                </button>
-                <button class="filter-btn" data-filter="carne">
-                    <i class="fas fa-drumstick-bite"></i> Carne
-                </button>
-                <button class="filter-btn" data-filter="pescado">
-                    <i class="fas fa-fish"></i> Pescado
-                </button>
-                <button class="filter-btn" data-filter="vegetariano">
-                    <i class="fas fa-leaf"></i> Vegetariano
-                </button>
-                <button class="filter-btn" data-filter="ensalada">
-                    <i class="fas fa-salad"></i> Ensaladas
-                </button>
-            </div>
-        </div>
-    </section>
-    
-    <section class="recipes-section">
-        <div class="container">
-            <div class="recipes-count" id="recipesCount">Mostrando todas las recetas</div>
-            <div class="recipes-grid" id="recipesGrid">
-                <!-- RECETAS DE CARNE -->
-                <div class="recipe-card" data-category="carne">
-                    <div class="recipe-header">
-                        <h2>ALBÓNDIGAS DE POLLO RICAS</h2>
-                        <span class="recipe-category">Carne</span>
+        
+        <div class="recipe-grid">
+            <!-- Carne -->
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Ternera Crujiente</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-092fde2aefc74bd8b3f40b0962f11ee7.jpg" alt="Ternera Crujiente" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>150 Gr ternera magra</li>
+                            <li>1 calabacín</li>
+                            <li>1 cebolleta</li>
+                            <li>15 Gr cacahuetes picados</li>
+                            <li>1 diente ajo</li>
+                            <li>1/2 lima (zumo)</li>
+                            <li>5 gr de jengibre picado</li>
+                            <li>0.5 guindillas</li>
+                            <li>1 crda salsa soja</li>
+                            <li>2 cdrtas de miel</li>
+                            <li>1 cdra. aove</li>
+                        </ul>
                     </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>250 gr pechuga pollo</li>
-                                <li>40 gr espinacas</li>
-                                <li>1/3 rama apio</li>
-                                <li>1/4 cebolla</li>
-                                <li>1/3 cdta pimentón</li>
-                                <li>40 gr queso feta</li>
-                                <li>1 clara</li>
-                                <li>1 cdta pan rallado</li>
-                                <li>60 gr yogurt prot</li>
-                                <li>1 cdta cilantro picado</li>
-                                <li>1 cdra pepino rallado</li>
-                                <li>2 cdra aove</li>
-                                <li>1 zumo chorrito de limón</li>
-                                <li>100 gr patata</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Para la salsa en un bol mezclamos el yogurt, pepino rallado, zumo de limón, cilantro, una cdta de zumo de limón y 2 de aove, por último salpimentamos mezclamos y dejamos reposar en la nevera.</li>
-                                <li>Cocemos la patata con piel hasta dejarla al dente, luego la aplastamos con un tenedor en la bandeja del horno, salpimentamos y asamos 20 minutos a 180º.</li>
-                                <li>Trituramos en una procesadora de alimentos la pechuga de pollo, luego añadimos: las espinacas, apio, cebolla, pimentón, queso feta, clara de huevo, y el pan rallado, volvemos a triturar hasta mezclar todos los ingredientes y hacer una masa.</li>
-                                <li>Hacemos las albóndigas con la masa y las horneamos a 180º durante 15 minutos o hasta que estén hechas.</li>
-                                <li>Acompañamos las albóndigas de la salsa y de la patata asada.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">50</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">29</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">17</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cortar el calabacín en tiras largas y cortamos la cebolleta en rodajas.</li>
+                            <li>Cortamos la carne y la salteamos con 1 cdra. aove a fuego alto un par de minutos, luego bajamos a fuego medio, y añadimos la mitad del ajo, jengibre y la miel y lo hacemos durante cinco minutos removiendo hasta que quede crujiente.</li>
+                            <li>Mezclamos el resto del ajo, jengibre y miel con la guindilla, zumo de lima y la salsa de soja para crear un aderezo.</li>
+                            <li>Servimos la ternera crujiente sobre la mezcla de calabacín y cebolleta y los picamos los 20 gr de cacahuetes o anacardos por encima y por ultimo añadimos el aderezo.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">39</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">20</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">32</span>
                             </div>
                         </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>lubina con crema de ajetes tiernos</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr ajetes tiernos</li>
-                                <li>1 cebolleta</li>
-                                <li>300 gr lubina limpia en lomos</li>
-                                <li>Sal/pimienta</li>
-                                <li>2 cdra aove</li>
-                                <li>300 ml caldo de verduras</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cortamos los ajetes y la cebolleta a groso modo y los salteamos hasta pocharlos.</li>
-                                <li>Añadimos el caldo de verduras y cocemos de 20 a 25 minutos a fuego lento. (Si necesitáramos echar mas caldo podemos hacerlo)</li>
-                                <li>Dejamos a fuego lento hasta que espese y coja consistencia.</li>
-                                <li>Cortamos los lomos de lubina en trozos algo grandes y doramos dos minutos por ambos lados en una sartén.</li>
-                                <li>Servimos la lubina sobre una cama de crema de ajetes.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">58</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">23</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">11</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>BROCHETAS DE CALABACÍN</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>1/2 calabacín</li>
-                                <li>3 lonchas de queso avart bajo en grasa</li>
-                                <li>40 gr espinacas</li>
-                                <li>Aove</li>
-                                <li>100 gr jamón serrano</li>
-                                <li>1 huevo</li>
-                                <li>2 cdra pan rallado</li>
-                                <li>1/2 cdta cebolla polvo</li>
-                                <li>1/3 ajo polvo</li>
-                                <li>sal/pimienta</li>
-                                <li>40 gr lechuga</li>
-                                <li>1/2 cebolla</li>
-                                <li>1/2 tomate</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Laminamos el calabacín con una mandolina a lo largo de todo el calabacín y cada loncha las partimos a la mitad también a lo largo.</li>
-                                <li>En cada lamina ponemos queso, jamón serrano y espinacas, para enrollar, después ensartamos con un palo para brochetas.</li>
-                                <li>Batimos el huevo y en otro plato mezclamos el pan rallado, cebolla y ajo en polvo junto con un poco de sal y pimenta.</li>
-                                <li>Empanamos las brochetas con huevo y pan rallado y las hacemos en una sartén a fuego medio hasta que estén doradas por todas sus partes. Serian unos 4 minutos por cada parte aproximadamente.</li>
-                                <li>Las acompañamos de una buena ensalada de lechuga tomate y cebolla y aliñamos con sal, vinagre y 1 cda Aove.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">39</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">21</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">16</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>HAMBURGUESAS DE ATÚN Y ZANAHORIA</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr de atún al natural</li>
-                                <li>70 gr zanahoria</li>
-                                <li>1 huevo +1 clara</li>
-                                <li>2 cdra cebollino</li>
-                                <li>pimentón</li>
-                                <li>sal/pimienta</li>
-                                <li>200 gr tomate</li>
-                                <li>2 diente de ajo</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Rallamos la zanahoria, picamos el cebollino.</li>
-                                <li>En un bol mezclamos la zanahoria, cebollino, atún, huevo y la clara, pimienta y salpimentamos al gusto.</li>
-                                <li>Hacemos una masa y albóndigas algo grandes con ella.</li>
-                                <li>Ponemos un sartén antiadherente y a fuego medio y cuando este caliente echamos las bolas y con la espátula aplastamos y damos forma de hamburguesas.</li>
-                                <li>Acompañamos de una ensalada de tomate y ajo.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">64</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">23</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">8</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE CARNE -->
-                <div class="recipe-card" data-category="carne">
-                    <div class="recipe-header">
-                        <h2>SOLOMILLO DE CERDO</h2>
-                        <span class="recipe-category">Carne</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>150 gr solomillo</li>
-                                <li>1/2 cebolla</li>
-                                <li>2 dientes de ajo</li>
-                                <li>100 ml vino blanco</li>
-                                <li>250 ml caldo carne</li>
-                                <li>1/2 cdta mostaza antigua</li>
-                                <li>2/3 cdta miel</li>
-                                <li>100 gr patata</li>
-                                <li>2 cdta aove</li>
-                                <li>1/2 cda mostaza de Dijon</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cortamos el solomillo en lonchas algo gruesas y lo sofreímos con el aceite y reservamos.</li>
-                                <li>En la misma sartén pochamos la cebolla y los dientes de ajo.</li>
-                                <li>Agregamos la mostaza de Dijon removemos y 2 minutos después el vino junto el caldo de carne y dejamos cocer 5 minutos.</li>
-                                <li>Pasamos el contenido de la sartén a un vaso de batidora y lo trituramos, añadimos la mostaza antigua y la miel y volvemos a triturar.</li>
-                                <li>Ponemos el contenido del vaso de la batidora en la sartén a fuego medio y dejamos espesar.</li>
-                                <li>Pelamos y cortamos las patatas estilo panadera y las hacemos a la plancha.</li>
-                                <li>Añadimos el solomillo a la salsa y dejamos cocer 5 minutitos.</li>
-                                <li>Acompañamos el solomillo con la patata a la plancha.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">46</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">38</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">23</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>EMPERADOR A LA PLANCHA</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr emperador</li>
-                                <li>150 gr col lombarda</li>
-                                <li>2 cdra. Perejil fresco</li>
-                                <li>2 dientes de ajo</li>
-                                <li>3 cdra. Aove/ sal</li>
-                                <li>1/2 limón</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cocemos la col lombarda en agua hirviendo con sal y medio limón durante 30 min o hasta que esté blanda (en olla express es más rápido). Y escurrimos.</li>
-                                <li>Machacamos en un mortero un diente de ajo y perejil y añadimos una cucharada de aove removemos y untamos el emperador con el machacado en crudo.</li>
-                                <li>Laminamos un diente de ajo y doramos con 1 cda de AOVE en una sartén y añadimos la col lombarda ya cocida y salteamos durante cinco minutos. Mientras la machacamos con la espátula o cuchara de madera para dejarla casi triturada en la propia sartén y salamos al gusto.</li>
-                                <li>Hacemos el emperador a la plancha al punto y acompañamos con la col lombarda.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">40</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">23</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">8</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>LENTEJAS CON GAMBONES</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>100 gr lenteja bote cocidas</li>
-                                <li>1 lata peq alcachofas</li>
-                                <li>10 gambones</li>
-                                <li>1 hoja laurel</li>
-                                <li>1 cdta salsa perrins</li>
-                                <li>1/4 pimiento italiano</li>
-                                <li>1 cdra tomate frito (nuestra)</li>
-                                <li>1 vaso caldo pescado</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>En una sartén doramos el pimiento verde muy picadito y añadimos el tomate y las lentejas.</li>
-                                <li>Pasados unos minutos añadimos unas 3 alcachofas cortadas en cuartos y el caldo de pescado, hasta casi cubrir las alcachofas y dejamos cocer unos 10 o 15 minutos.</li>
-                                <li>En este momento añadimos los gambones y un chorrito de salsa Perrins, apagamos el fuego y dejamos que se cocinen lentamente con el calor residual, están mucho mejor hechas del día anterior.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE ENSALADA -->
-                <div class="recipe-card" data-category="ensalada">
-                    <div class="recipe-header">
-                        <h2>ENSALADA PREMIUM</h2>
-                        <span class="recipe-category">Ensalada</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>40 gr cebolla pochada</li>
-                                <li>2 huevos</li>
-                                <li>50 gr de rúcula</li>
-                                <li>100 gr de jamón asado</li>
-                                <li>4 pepinillos</li>
-                                <li>20 gr parmesano</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cocemos los huevos.</li>
-                                <li>Cortamos los pepinillos, el jamón, los huevos y mezclamos con la cebolla pochada el queso y la rúcula.</li>
-                                <li>Aliñamos con limón y salamos al gusto.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">43</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">9</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">28</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>LASAÑA DE CALABACÍN</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>150 gr atún al natural</li>
-                                <li>1/2 calabacín</li>
-                                <li>1 cebolleta</li>
-                                <li>80 gr mozzarella</li>
-                                <li>100gr tomate triturado</li>
-                                <li>1 diente ajo</li>
-                                <li>Pimienta sal</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Salteamos la cebolla, ajo y por ultimo el tomate y dejamos cocer hasta que tenga consistencia de salsa de tomate.</li>
-                                <li>Cogemos el atún, añadimos la salsa y dejamos 10 minutos a fuego medio haciéndose.</li>
-                                <li>Hacemos laminas con el calabacín.</li>
-                                <li>Por ultimo montamos una lasaña con el atún y ponemos algo de queso entre las capas, usamos el calabacín para separar las capas y en la parte superior ponemos la capa final de queso.</li>
-                                <li>Con el horno a 180º hacemos 10 minutos la lasaña y después subimos la temperatura del horno para gratinar el queso.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">56</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">17</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">14</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE CARNE -->
-                <div class="recipe-card" data-category="carne">
-                    <div class="recipe-header">
-                        <h2>PAVO A LA ITALIANA</h2>
-                        <span class="recipe-category">Carne</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr pechuga de pavo</li>
-                                <li>100 gr mozarela</li>
-                                <li>1,5 tomates</li>
-                                <li>Orégano y albahaca</li>
-                                <li>Aceite de e oliva</li>
-                                <li>4 Champiñones</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Calentamos el horno a 200º.</li>
-                                <li>Salpimentamos la pechuga y la ponemos en una bandeja del horno.</li>
-                                <li>Encima de la pechuga ponemos tomate en rodajas y seguidamente los champiñones, una hoja de albahaca y por último el queso.</li>
-                                <li>Horneamos el pavo 20 minutos a 180º dependiendo del horno.</li>
-                                <li>Montamos la ensalada y acompañamos del pavo.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">78</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">12</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">18</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>TORTILLA DE BACALAO</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr de bacalao desalado y desmigado</li>
-                                <li>1 cebolleta</li>
-                                <li>2 dientes de ajo</li>
-                                <li>2 huevos</li>
-                                <li>1/2 pimiento verde</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Laminamos un ajo finamente y picamos el pimiento y la cebolleta para dorarlos en una sartén.</li>
-                                <li>Añadimos el bacalao y dejamos cocinar 4 minutos aproximadamente para luego añadirle los huevos batidos y hacer la tortilla.</li>
-                                <li>Acompañamos la tortilla con el a tomate y el ajo picado.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">40</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">7</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">17</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE CARNE -->
-                <div class="recipe-card" data-category="carne">
-                    <div class="recipe-header">
-                        <h2>TERNERA CRUJIENTE</h2>
-                        <span class="recipe-category">Carne</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>150 Gr ternera magra</li>
-                                <li>1 calabacín</li>
-                                <li>1 cebolleta</li>
-                                <li>15 Gr cacahuetes picados</li>
-                                <li>1 diente ajo</li>
-                                <li>1/2 lima (zumo)</li>
-                                <li>5 gr de jengibre picado</li>
-                                <li>0.5 guindillas</li>
-                                <li>1 crda salsa soja</li>
-                                <li>2 cdrtas de miel</li>
-                                <li>1 cdra. aove</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cortar el calabacín en tiras largas y cortamos la cebolleta en rodajas.</li>
-                                <li>Cortamos la carne y la salteamos con 1 cdra. aove a fuego alto un par de minutos, luego bajamos a fuego medio, y añadimos la mitad del ajo, jengibre y la miel y lo hacemos durante cinco minutos removiendo hasta que quede crujiente.</li>
-                                <li>Mezclamos el resto del ajo, jengibre y miel con la guindilla, zumo de lima y la salsa de soja para crear un aderezo.</li>
-                                <li>Servimos la ternera crujiente sobre la mezcla de calabacín y cebolleta y le picamos los 20 gr de cacahuetes o anacardos por encima y por ultimo añadimos el aderezo.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">39</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">20</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">32</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>PULPO A LA GALLEGA</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>300 gr de pulpo</li>
-                                <li>100 gr de patata cocida</li>
-                                <li>2 cdra. de aceite de oliva virgen extra</li>
-                                <li>Pimentón picante y dulce</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Primero descongelamos el pulpo y lo limpiamos.</li>
-                                <li>Después en una cazuela con agua hirviendo lo asustamos tres veces, es decir cogiéndolo por la cabeza lo metemos y sacamos tres veces para que la piel se ponga tersa y no se desprenda.</li>
-                                <li>cocemos el pulpo unos 30–35 minutos a fuego medio.</li>
-                                <li>Pelamos las patatas y las cocemos para acompañar el pulpo.</li>
-                                <li>cuando el pulpo este cocido, lo cortamos y lo aliñamos al gusto.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">49</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">16</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">26</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>BROCHETAS DE SALMON Y PIÑA</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>3 Rodajas de piña</li>
-                                <li>250 gr de salmón fresco</li>
-                                <li>1/2 lima</li>
-                                <li>100 gr de lechuga variada</li>
-                                <li>1 /2 tomate</li>
-                                <li>1/2 cebolla</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cortar el salmón en dados grandes, también hacemos los mismo con la piña. Después montamos las brochetas salmón piña salmón..</li>
-                                <li>Sazonamos las brochetas con el zumo de lima, sal, pimienta y dejamos marinar diez minutos.</li>
-                                <li>Hacemos las brochetas en la parrilla y acompañamos con la ensalada.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">51</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">17</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">37</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>TOMATES RELLENOS DE ATÚN</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>300 tomates grandes</li>
-                                <li>150 gr atún al natural</li>
-                                <li>2 huevos</li>
-                                <li>10 aceitunas negras</li>
-                                <li>2 cdra mayonesa</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cocemos los huevos</li>
-                                <li>Primero vaciamos los tomates al máximo para poder rellenar.</li>
-                                <li>Escurrimos el atún y picamos las aceitunas. y los huevos.</li>
-                                <li>Salpimentamos el interior de los tomates.</li>
-                                <li>En un bol mezclamos: el atún, las aceitunas, los huevos y la mayonesa. Salamos al gusto.</li>
-                                <li>Rellenamos los tomates y dejamos enfriar 10 minutos.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">53</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">12</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">16</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE CARNE -->
-                <div class="recipe-card" data-category="carne">
-                    <div class="recipe-header">
-                        <h2>QUICHÉ DEL REVÉS</h2>
-                        <span class="recipe-category">Carne</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>150 gr de pavo</li>
-                                <li>100 gr espinacas</li>
-                                <li>50 gr jamón serrano</li>
-                                <li>8 tomates cherry</li>
-                                <li>1/2 cebolla</li>
-                                <li>1 cdra de perejil</li>
-                                <li>1 diente ajo</li>
-                                <li>1 clara</li>
-                                <li>40 gr mozzarella</li>
-                                <li>1 cda aove</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>En una procesadora de carne metemos el pavo, el ajo, la mitad de la cebolla y el perejil, salpimentamos al gusto y procesamos hasta obtener una masa homogénea.</li>
-                                <li>Aceitamos un molde de horno y ponemos la masa hecha en la procesadora y dentro vamos dándole forma con los dedos para que ocupe todo el fondo del molde y que suba u poco más en los bordes como si fuera una tarta.</li>
-                                <li>En una sartén pochamos la espinaca, con la otra mitad de cebolla y el jamón serrano y reservamos.</li>
-                                <li>Batimos la clara y las mezclamos con el pochado de las espinacas y con ella rellenamos el molde de pollo.</li>
-                                <li>Por encima de las espinacas con la clara añadimos el queso picado para gratinar.</li>
-                                <li>Asamos el quiche a 180º en el horno previamente caliente durante 15 minutos y por último gratinamos el queso.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">52</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">9</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">25</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE PESCADO -->
-                <div class="recipe-card" data-category="pescado">
-                    <div class="recipe-header">
-                        <h2>ESPENCAT</h2>
-                        <span class="recipe-category">Pescado</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>250 gr migas de bacalao</li>
-                                <li>2oogr pimiento rojo</li>
-                                <li>200gr berenjena</li>
-                                <li>1 ramita tomillo</li>
-                                <li>3 cdra aove</li>
-                                <li>2 cdra vinagre</li>
-                                <li>1 cabeza de ajo</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Cortamos la parte de arriba de la cabeza de ajo, como quitándole la tapa sin pelar y le añadimos 1 cdta aove, sal por encima.</li>
-                                <li>En una bandeja de horno ponemos los pimientos, la berenjena y la cabeza de ajo, con otra cdta de aove la añadimos por encima de los pimientos y la berenjena y también salamos al gusto.</li>
-                                <li>Horneamos a 180º hasta que las verduras estén pochadas.</li>
-                                <li>Una vez hechas las verduras, las sacamos, tapamos con papel albal para que suden las verduras y podamos pelarlas mejor. Reservar la salsa que salga de asar las verduras.</li>
-                                <li>Salteamos las migas de bacalao 3 minutos hasta dejar al punto de cocción.</li>
-                                <li>Pelamos las verduras.</li>
-                                <li>Una vez peladas las verduras, las picamos, añadimos y picamos 4 dientes de ajo de la cabeza que hemos asado y reservamos el resto para otra receta.</li>
-                                <li>Añadimos a las verduras el bacalao desmigado y el tomillo, y mezclamos, si fuera necesario rectificamos de la sal.</li>
-                                <li>Por úlyimo añadimos el jugo de la bandeja para potenciar el sabor.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">50</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">19</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">18</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS DE ENSALADA -->
-                <div class="recipe-card" data-category="ensalada">
-                    <div class="recipe-header">
-                        <h2>ENSALADA GRIEGA Y TERNERA</h2>
-                        <span class="recipe-category">Ensalada</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>150 gr yogurt proteínas</li>
-                                <li>1 pepino</li>
-                                <li>1 limón</li>
-                                <li>100 gr patata</li>
-                                <li>1 cdra hierbabuena</li>
-                                <li>pimienta sal</li>
-                                <li>150 gr ternera</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Pelamos y rallamos el pepino y lo dejamos escurriendo.</li>
-                                <li>En un bol mezclamos el yogurt, limón, aceite, sal, pimienta, hierbabuena y removemos bien.</li>
-                                <li>Mientras pelamos y cocemos las patatas en laminas de 1 cm de grosor.</li>
-                                <li>Cuando la patata este cocida y fría la añadimos a la mezcla anterior junto con el pepino y dejamos reposar un par de horas.</li>
-                                <li>Salpimentamos el filete de ternera, lo hacemos a la plancha y acompañamos con la ensalada griega.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">47</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">27</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">19</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>HAMBURGUESA DE PARMESANO</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>200 gr de atún</li>
-                                <li>1/2 pimiento verde</li>
-                                <li>1/3 pimiento rojo</li>
-                                <li>3 cdra espinacas picadas</li>
-                                <li>1 clara + 1 huevo</li>
-                                <li>2 cdra parmesano</li>
-                                <li>1 tomate</li>
-                                <li>1/2 pepino</li>
-                                <li>2 cdra aove</li>
-                                <li>1 cdra vinagre</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Picamos el pimiento verde y rojo en dados.</li>
-                                <li>En un bol añadimos el atún, los pimientos picados, las espinacas, el huevo y la clara</li>
-                                <li>Salpimentamos al gusto, añadimos el parmesano y mezclamos con las manos hasta obtener una masa.</li>
-                                <li>Hacemos la ensalada para acompañar a nuestras hamburguesas: picamos el tomate y el pepino, aliñamos con la cdra de aove, sal y una cdra vinagre y reservamos.</li>
-                                <li>En una sartén antiadherente hacemos las hamburguesas con la mezcla del bol hasta que estén ligeramente tostadas por ambos lados.</li>
-                                <li>Acompañamos las hamburguesas con la ensalada de pepino y tomate.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">59</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">10</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">18</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>TALLARINES BENEDICTINOS</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>300gr de calabacín</li>
-                                <li>10 tomates Cherry</li>
-                                <li>3 diente ajos</li>
-                                <li>2 huevos</li>
-                                <li>100gr jamón serrano</li>
-                                <li>2 cdra aove</li>
-                                <li>3 cdra salsa soja</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Con una mandolina laminamos el calabacín a lo largo y después lo cortamos con un cuchillo para hacer forma de tallarines.</li>
-                                <li>Picamos los diente de ajos.</li>
-                                <li>Cocemos los huevos 5 minutos exactamente para que nos quede la yema sin cuajar , después los metemos en agua con hielo y pelamos. (Igual que en la foto)</li>
-                                <li>Bañamos los huevos en la salsa de soja y dejamos marinar media hora y le daremos vueltas cada 10 minutos.</li>
-                                <li>En una sartén, con 2 cdra de aove pochamos a fuego bajo los tomates hasta que estén tostados por todos los lados.</li>
-                                <li>Añadimos los ajos picados y el jamón, dejamos tostar.</li>
-                                <li>Añadimos los tallarines, dejamos dorar y que se mezcle con todos los sabores unos 4 minutos aproximadamente.</li>
-                                <li>Retiramos y emplatamos.</li>
-                                <li>Por último añadimos los huevos encima y disfrutamos.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">40</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">10</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">29</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
-                    </div>
-                </div>
-                
-                <!-- RECETAS VEGETARIANAS -->
-                <div class="recipe-card" data-category="vegetariano">
-                    <div class="recipe-header">
-                        <h2>PIZZA DE PATATA</h2>
-                        <span class="recipe-category">Vegetariano</span>
-                    </div>
-                    <div class="recipe-content">
-                        <div class="recipe-ingredients">
-                            <h3><i class="fas fa-shopping-basket"></i> Ingredientes</h3>
-                            <ul class="ingredients-list">
-                                <li>1 patata mediana</li>
-                                <li>125 gr jamón york</li>
-                                <li>10 aceituna negras</li>
-                                <li>125 gr mozzarella light</li>
-                                <li>1/2 cebolleta</li>
-                                <li>2 champiñones</li>
-                                <li>3 cdra salsa de tomate</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-preparation">
-                            <h3><i class="fas fa-utensils"></i> Preparación</h3>
-                            <ul class="preparation-steps">
-                                <li>Pelamos y hacemos la patata en rodajas finas con ayuda de una mandolina.</li>
-                                <li>En una sartén añadimos la cdra de aceite y ponemos la patata haciendo una espiral desde el centro hacia afuera, y dejamos dorar</li>
-                                <li>Cuando este dorada las patatas se unen y en ese momento añadimos un poco de queso y dejamos que se funda unos segundos , bajamos el fuego y añadimos el resto de los ingredientes siendo la mozzarella el ultimo ingrediente.</li>
-                                <li>Tapamos la sartén con una tapa y dejamos que se funda el queso, cuando esto este destapamos para que pierda la humedad y se tueste la patata de nuevo para poder sacarla.</li>
-                                <li>El truco esta en saber cuando está terminada. Lo sabremos cuando al mover la sartén se mueve toda la pizza a la vez.</li>
-                            </ul>
-                        </div>
-                        <div class="recipe-nutrition">
-                            <h3><i class="fas fa-chart-pie"></i> Información Nutricional</h3>
-                            <div class="nutrition-info">
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">39</div>
-                                    <div class="nutrition-label">Proteínas</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">38</div>
-                                    <div class="nutrition-label">Hidratos</div>
-                                </div>
-                                <div class="nutrition-item">
-                                    <div class="nutrition-value">19</div>
-                                    <div class="nutrition-label">Grasas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-recipe-btn">Ver receta completa</button>
-                    <div class="recipe-footer">
-                        LA MANZANA PROHIBIDA - Florentino cuevillas nº6 Ourense - telf. 615 10 83 95
                     </div>
                 </div>
             </div>
             
-            <div class="no-results" id="noResults">
-                <i class="fas fa-search"></i>
-                <p>No se encontraron recetas que coincidan con tu búsqueda</p>
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Pavo a la Italiana</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-c38aee7235dc4858bcd948814140400b.jpg" alt="Pavo a la Italiana" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr pechuga de pavo</li>
+                            <li>100 gr mozzarella</li>
+                            <li>1,5 tomates</li>
+                            <li>Orégano y albahaca</li>
+                            <li>Aceite de e oliva</li>
+                            <li>4 Champiñones</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Calentamos el horno a 200°.</li>
+                            <li>Salpimentamos la pechuga y la ponemos en una bandeja del horno.</li>
+                            <li>Encima de la pechuga ponemos tomate en rodajas y seguidamente los champiñones, una hoja de albahaca y por último el queso.</li>
+                            <li>Horneamos el pavo 20 minutos a 180° dependiendo del horno.</li>
+                            <li>Montamos la ensalada y acompañamos del pavo.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">78</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">12</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">18</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Solomillo de Cerdo</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-46fe5f2b5b2b4dfbbe107e75c7f6c302.jpg" alt="Solomillo de Cerdo" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>150 gr solomillo</li>
+                            <li>1/2 cebolla</li>
+                            <li>2 dientes de ajo</li>
+                            <li>100 ml vino blanco</li>
+                            <li>250 ml caldo carne</li>
+                            <li>1/2 cdta mostaza antigua</li>
+                            <li>2/3 cdta miel</li>
+                            <li>100 gr patata</li>
+                            <li>2 cdta aove</li>
+                            <li>1/2 cda mostaza de Dijon</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cortamos el solomillo en lonchas algo gruesas y lo sofreímos con el aceite y reservamos.</li>
+                            <li>En la misma sartén pochamos la cebolla y los dientes de ajo.</li>
+                            <li>Agregamos la mostaza de Dijon removemos y 2 minutos después el vino junto el caldo de carne y dejamos cocer 5 minutos.</li>
+                            <li>Pasamos el contenido de la sartén a un vaso de batidora y lo trituramos, añadimos la mostaza antigua y la miel y volvemos a triturar.</li>
+                            <li>Ponemos el contenido del vaso de la batidora en la sartén a fuego medio y dejamos espesar.</li>
+                            <li>Pelamos y cortamos las patatas estilo panadera y las hacemos a la plancha.</li>
+                            <li>Añadimos el solomillo a la salsa y dejamos cocer 5 minutos.</li>
+                            <li>Acompañamos el solomillo con la patata a la plancha.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">46</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">38</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">23</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Albóndigas de Pollo Ricas</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-48e1df43c70d4bc4af2c7c6332cd17e2.jpg" alt="Albóndigas de Pollo Ricas" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>250 gr pechuga pollo</li>
+                            <li>40 gr espinacas</li>
+                            <li>1/3 rama apio</li>
+                            <li>1/4 cebolla</li>
+                            <li>1 cdta pimentón</li>
+                            <li>40 gr queso feta</li>
+                            <li>1 clara</li>
+                            <li>1 cdta pan rallado</li>
+                            <li>60 gr yogurt prot</li>
+                            <li>1 cdta cilantro picado</li>
+                            <li>1 cdra pepino rallado</li>
+                            <li>2 cdra aove</li>
+                            <li>1 zumo chorrillo de limón</li>
+                            <li>100 gr patata</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Para la salsa en un bol mezclamos el yogurt, pepino rallado, zumo de limón, cilantro, una cdta de zumo de limón y 2 de aove, por ultimo salpimentamos mezclamos y dejamos reposar en la nevera.</li>
+                            <li>Cocemos la patata con piel hasta dejarla al dente, luego la aplastamos con un tenedor en la bandeja del horno, salpimentamos y asamos 20 minutos a 180°.</li>
+                            <li>Trituramos en una procesadora de alimentos la pechuga de pollo, luego añadimos: las espinacas, apio, cebolla, pimentón, queso feta, clara de huevo, y el pan rallado, volvemos a triturar hasta mezclar todos los ingredientes y hacer una masa.</li>
+                            <li>Hacemos las albóndigas con la masa y las horneamos a 180° durante 15 minutos o hasta que estén hechas.</li>
+                            <li>Acompañamos las albóndigas de la salsa y de la patata asada.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">50</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">29</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">17</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Hamburguesa de Parmesano</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-57935a1e289b43159859c7b2f2db571e.jpg" alt="Hamburguesa de Parmesano" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr de atún</li>
+                            <li>1/2 pimiento verde</li>
+                            <li>1/3 pimiento rojo</li>
+                            <li>3 cdra espinacas picadas</li>
+                            <li>1 clara + 1 huevo</li>
+                            <li>2 cdra parmesano</li>
+                            <li>1 tomate</li>
+                            <li>1/2 pepino</li>
+                            <li>2 cdra aove</li>
+                            <li>1 cdra vinagre</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Picamos el pimiento verde y rojo en dados.</li>
+                            <li>En un bol añadimos el atún, los pimientos picados, las espinacas, el huevo y la clara</li>
+                            <li>Salpimentamos al gusto, añadimos el parmesano y mezclamos con las manos hasta obtener una masa.</li>
+                            <li>Hacemos la ensalada para acompañar a nuestras hamburguesas: picamos el tomate y el pepino, aliñamos con la clara de aove, sal y una cdra vinagre y reservamos.</li>
+                            <li>En una sartén antiadherente hacemos las hamburguesas con la mezcla del bol hasta que estén ligeramente tostadas por ambos lados.</li>
+                            <li>Acompañamos las hamburguesas con la ensalada de pepino y tomate.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">59</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">10</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">18</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Quiché del Revés</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-6a455dc5f83d4036a8818ae9fc1e6af7.jpg" alt="Quiché del Revés" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>150 gr de pavo</li>
+                            <li>100 gr espinacas</li>
+                            <li>50 gr jamón serrano</li>
+                            <li>8 tomates cherry</li>
+                            <li>1/2 cebolla</li>
+                            <li>1 cdra de perejil</li>
+                            <li>1 diente ajo</li>
+                            <li>1 clara</li>
+                            <li>40 gr mozzarella</li>
+                            <li>1 cda aove</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>En una procesadora de carne metemos el pavo, el ajo, la mitad de la cebolla y el perejil, salpimentamos al gusto y procesamos hasta obtener una masa homogénea.</li>
+                            <li>Aceitamos un molde de horno y ponemos la masa hecha en la procesadora y dentro vamos dándole forma con los dedos para que ocupe todo el fondo del molde y que suba u poco más en los bordes como si fuera una tarta.</li>
+                            <li>En una sartén pochamos la espinaca, con la otra mitad de cebolla y el jamón serrano y reservamos.</li>
+                            <li>Batimos la clara y las mezclamos con el pochado de las espinacas y con ella rellenamos el molde de pollo.</li>
+                            <li>Por encima de las espinacas con la clara añadimos el queso picado para gratinar.</li>
+                            <li>Asamos el quiche a 180° en el horno previamente caliente durante 15 minutos y por último gratinamos el queso.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">52</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">9</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">25</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Espencat</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-8b35f6bd061c43a4bb2009040a3c97a0.jpg" alt="Espencat" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>250 gr migas de bacalao</li>
+                            <li>200gr pimiento rojo</li>
+                            <li>200gr berenjena</li>
+                            <li>1 ramita tomillo</li>
+                            <li>3 cdra aove</li>
+                            <li>2 cdra vinagre</li>
+                            <li>1 cabeza de ajo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cortamos la parte de arriba de la cabeza de ajo, como quitándole la tapa sin pelar y le añadimos 1 cdra aove, sal por encima.</li>
+                            <li>En una bandeja de horno ponemos los pimientos, la berenjena y la cabeza de ajo, con otra cdra de aove a añadimos por encima de los pimientos y la berenjena y también salamos al gusto.</li>
+                            <li>Horneamos a 180° hasta que las verduras estén pochadas.</li>
+                            <li>Una vez hechas las verduras, las sacamos, tapamos con papel albal para que suuden las verduras y podemos pelarlas mejor. Reservar la salsa que salga de asar las verduras.</li>
+                            <li>Salteamos las migas de bacalao 3 minutos hasta dejar al punto de cocción.</li>
+                            <li>Pelamos las verduras.</li>
+                            <li>Una vez peladas las verduras, las picamos, añadimos y picamos 4 dientes de ajo de la cabeza que hemos asado y reservamos el resto para otra receta.</li>
+                            <li>Añadimos a las verduras el bacalao desmigado y el tomillo, y mezclamos, si fuera necesario rectificamos de la sal.</li>
+                            <li>Por último añadimos el jugo de la bandeja para potenciar el sabor.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">50</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">19</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">18</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="carne">
+                <div class="recipe-header">
+                    <h2>Ensalada Griega y Ternera</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-a71b434e95054141b57af7928b18748d.jpg" alt="Ensalada Griega y Ternera" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>150 gr yogurt proteínas</li>
+                            <li>1 pepino</li>
+                            <li>1 limón</li>
+                            <li>100 gr patata</li>
+                            <li>1 cdra hierbabuena</li>
+                            <li>pimienta</li>
+                            <li>sal</li>
+                            <li>150 gr ternera</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Pelamos y rallamos el pepino y lo dejamos escurriendo.</li>
+                            <li>En un bol mezclamos el yogurt, limón, aceite, sal, pimienta, hierbabuena y removemos bien.</li>
+                            <li>Mientras pelamos y cocemos las patatas en laminas de 1 cm de grosor.</li>
+                            <li>Cuando la patata este cocida y fria la añadimos a la mezcla anterior junto con el pepino y dejamos reposar un par de horas.</li>
+                            <li>Salpimentamos el filete de ternera, lo hacemos a la plancha y acompañamos con la ensalada griega.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">47</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">27</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">19</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pescado -->
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Pulpo a la Gallega</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-25c241a7a2ff447c94e41a8a3de9ea41.jpg" alt="Pulpo a la Gallega" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>300 gr de pulpo</li>
+                            <li>100 gr de patata cocida</li>
+                            <li>2 cdra. de aceite de oliva virgen extra</li>
+                            <li>Pimentón picante y dulce</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Primero descongelamos el pulpo y lo limpiamos.</li>
+                            <li>Después en una cazuela con agua hirviendo lo asustamos tres veces, es decir cogiéndolo por la cabeza lo metemos y sacamos tres veces para que la piel se ponga tersa y no se desprenda.</li>
+                            <li>cocemos el pulpo unos 30-35 minutos a fuego medio.</li>
+                            <li>Pelamos las patatas y las cocemos para acompañar el pulpo.</li>
+                            <li>cuando el pulpo este cocido, lo cortamos y lo aliñamos al gusto.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">49</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">16</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">26</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Brochetas de Salmón y Piña</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-1717e11e57e64f74916b9878856676a6.jpg" alt="Brochetas de Salmón y Piña" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>3 Rodajas de piña</li>
+                            <li>250 gr de salmón fresco</li>
+                            <li>1/2 lima</li>
+                            <li>100 gr de lechuga variada</li>
+                            <li>1 /2 tomate</li>
+                            <li>1/2 cebolla</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cortar el salmón en dados grandes, también hacemos los mismo con la piña. Después montamos las brochetas salmón piña salmón..</li>
+                            <li>Sazonamos las brochetas con el zumo de lima, sal, pimienta y dejamos marinar diez minutos.</li>
+                            <li>Hacemos las brochetas en la parrilla y acompañamos con la ensalada.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">51</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">17</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">37</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Tomates Rellenos de Atún</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-4f9eccb0da01409c863e73053a7d499d.jpg" alt="Tomates Rellenos de Atún" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>300 tomates grandes</li>
+                            <li>150 gr atún al natural</li>
+                            <li>2 huevos</li>
+                            <li>10 aceitunas negras</li>
+                            <li>2 cdra mayonesa</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cocemos los huevos</li>
+                            <li>Primero vaciamos los tomates al máximo para poder rellenar.</li>
+                            <li>Escurrimos el atún y picamos las aceitunas, y los huevos.</li>
+                            <li>Salpimentamos el interior de los tomates.</li>
+                            <li>En un bol mezclamos: el atún, las aceitunas, los huevos y la mayonesa. Salamos al gusto.</li>
+                            <li>Rellenamos los tomates y dejamos enfriar 10 minutos.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">53</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">12</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">16</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Lubina con crema de ajetes tiernos</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-130891c9533a4140ae29b92c3885c57f.jpg" alt="Lubina con crema de ajetes tiernos" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr ajetes tiernos</li>
+                            <li>1 cebolleta</li>
+                            <li>300 gr lubina limpia en lomos</li>
+                            <li>Sal/pimienta</li>
+                            <li>2 cdra aove</li>
+                            <li>300 ml caldo de verduras</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cortamos los ajetes y la cebolleta a grosso modo y los salteamos hasta pocharlos.</li>
+                            <li>Añadimos el caldo de verduras y cocemos de 20 a 25 minutos a fuego lento. (Si necesitáramos echar más caldo podemos hacerlo)</li>
+                            <li>Dejamos a fuego lento hasta que espese y coja consistencia.</li>
+                            <li>Cortamos los lomos de lubina en trozos algo grandes y doramos dos minutos por ambos lados en una sartén.</li>
+                            <li>Servimos la lubina sobre una cama de crema de ajetes.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">58</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">23</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">11</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Emperador a la Plancha</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-909fce6740d14b5382c868a849de0cd6.jpg" alt="Emperador a la Plancha" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr emperador</li>
+                            <li>150 gr col lombarda</li>
+                            <li>2 cdra. Perejil fresco</li>
+                            <li>2 dientes de ajo</li>
+                            <li>3 cdra. Aove/ sal</li>
+                            <li>1/2 limón</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cocemos la col lombarda en agua hirviendo con sal y medio limón durante 30 min o hasta que esté blanda (en olla express es más rápido). Y escurrimos.</li>
+                            <li>Machacamos en un mortero un diente de ajo y perejil y añadimos una cucharada de aove removemos y untamos el emperador con el machacado en crudo.</li>
+                            <li>Laminamos un diente de ajo y doramos con 1 cda de AOVE en una sartén y añadimos la col lombarda ya cocida y salteamos durante cinco minutos. Mientras la machacamos con la espátula o cuchara de madera para dejarla casi triturada en la propia sartén y salamos al gusto.</li>
+                            <li>Hacemos el emperador a la plancha al punto y acompañamos con la col lombarda.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">41</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">13</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Lentejas con Gambones</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-f3abe3f8e2b34e509260f9a55aef25fc.jpg" alt="Lentejas con Gambones" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>100 gr lenteja bote cocidas</li>
+                            <li>1 lata peq alcahofas</li>
+                            <li>10 gambones</li>
+                            <li>1 hoja laurel</li>
+                            <li>1 cdta salsa perrins</li>
+                            <li>1/4 pimiento italiano</li>
+                            <li>1 cdra tomate frito (nuestra)</li>
+                            <li>1 vaso caldo pescado</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>En una sartén doramos el pimiento verde muy picadito y añadimos el tomate y las lentejas.</li>
+                            <li>Pasados unos minutos añadimos unas 3 alcahofas cortadas en cuartos y el caldo de pescado, hasta casi cubrir las alcahofas y dejamos cocer unos 10 o 15 minutos.</li>
+                            <li>En este momento añadimos los gambones y un chorrito de salsa Perrins, apagamos el fuego y dejamos que se cocinen lentamente con el calor residual, están mucho mejor hechas del día anterior.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">40</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">23</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">8</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Calorías</span>
+                                <span class="nutrition-value">380</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="pescado">
+                <div class="recipe-header">
+                    <h2>Tortilla de Bacalao</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-feb7e5706ca84b82946b49ad4d84866b.jpg" alt="Tortilla de Bacalao" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr de bacalao desalado y desmigado</li>
+                            <li>1 cebolleta</li>
+                            <li>2 dientes de ajo</li>
+                            <li>2 huevos</li>
+                            <li>1/2 pimiento verde</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Laminamos un ajo finamente y picamos el pimiento y la cebolleta para dorarlos en una sartén.</li>
+                            <li>Añadimos el bacalao y dejamos cocinar 4 minutos aproximadamente para luego añadirle los huevos batidos y hacer la tortilla.</li>
+                            <li>Acompañamos la tortilla con el tomate y el ajo picado.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">40</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">7</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">17</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vegetal -->
+            <div class="recipe-card show" data-category="vegetal">
+                <div class="recipe-header">
+                    <h2>Ensalada Premium</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-d84727d4bddc45139e2b55025aa95c12.jpg" alt="Ensalada Premium" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>40 gr cebolla pochada</li>
+                            <li>2 huevos</li>
+                            <li>50 gr de rúcula</li>
+                            <li>100 gr de jamón asado</li>
+                            <li>4 pepinillos</li>
+                            <li>20 gr parmesano</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Cocemos los huevos.</li>
+                            <li>Cortamos los pepinillos, el jamón, los huevos y mezclamos con la cebolla pochada el queso y la rúcula.</li>
+                            <li>Aliñamos con limón y salamos al gusto.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">43</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">9</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">28</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="vegetal">
+                <div class="recipe-header">
+                    <h2>Lasaña de Calabacín</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270333061-5cbc2aeed95a417589f6a025ccb346e5.jpg" alt="Lasaña de Calabacín" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>150 gr atún al natural</li>
+                            <li>1/2 calabacín</li>
+                            <li>1 cebolleta</li>
+                            <li>80 gr mozzarella</li>
+                            <li>100gr tomate triturado</li>
+                            <li>1 diente ajo</li>
+                            <li>Pimienta</li>
+                            <li>sal</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Salteamos la cebolla, ajo y por ultimo el tomate y dejamos cocer hasta que tenga consistencia de salsa de tomate.</li>
+                            <li>Cogemos el atún, añadimos la salsa y dejamos 10 minutos a fuego medio haciendo.</li>
+                            <li>Hacemos laminas con el calabacín.</li>
+                            <li>Por ultimo montamos una lasaña con el atún y ponemos algo de queso entre las capas, usamos el calabacín para separar las capas y en la parte superior ponemos la capa final de queso.</li>
+                            <li>Con el horno a 180° hacemos 10 minutos la lasaña y después subimos la temperatura del horno para gratinar el queso.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">56</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">17</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="vegetal">
+                <div class="recipe-header">
+                    <h2>Brochetas de Calabacín</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-9c0bb3afc0dc4372bf0d2afb3b6ef2e0.jpg" alt="Brochetas de Calabacín" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>1/2 calabacín</li>
+                            <li>3 lonchas de queso avart bajo en grasa</li>
+                            <li>40 gr espinacas</li>
+                            <li>Aove</li>
+                            <li>100 gr jamón serrano</li>
+                            <li>1 huevo</li>
+                            <li>2 cdra pan rallado</li>
+                            <li>1/2 cdta cebolla polvo</li>
+                            <li>1/3 ajo polvo</li>
+                            <li>sal/pimienta</li>
+                            <li>40 gr lechuga</li>
+                            <li>1/2 tomate</li>
+                            <li>1/2 cebolla</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Laminamos el calabacín con una mandolina a lo largo de todo el calabacín y cada loncha las partimos a la mitad también a lo largo.</li>
+                            <li>En cada lamina ponemos queso, jamón serrano y espinacas, para enrollar, después ensartamos con un palo para brochetas.</li>
+                            <li>Batimos el huevo y en otro plato mezclamos el pan rallado, cebolla y ajo en polvo junto con un poco de sal y pimienta.</li>
+                            <li>Empanamos las brochetas con huevo y pan rallado y las hacemos en una sartén a fuego medio hasta que estén doradas por todas sus partes. Serían unos 4 minutos por cada parte aproximadamente.</li>
+                            <li>Las acompañamos de una buena ensalada de lechuga tomate y cebolla y aliñamos con sal, vinagre y 1 cda Aove.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">39</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">21</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">16</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="vegetal">
+                <div class="recipe-header">
+                    <h2>Pizza de Patata</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-8e7a9340a84242c2ab2d83ba846e1eff.jpg" alt="Pizza de Patata" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>1 patata mediana</li>
+                            <li>125 gr jamón york</li>
+                            <li>10 aceituna negras</li>
+                            <li>125 gr mozzarella light</li>
+                            <li>1/2 cebolleta</li>
+                            <li>2 champiñones</li>
+                            <li>3 cdra salsa de tomate</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Pelamos y hacemos la patata en rodajas finas con ayuda de una mandolina.</li>
+                            <li>En una sartén añadimos la cdra de aceite y ponemos la patata haciendo una espiral desde el centro hacia afuera, y dejamos dorar</li>
+                            <li>Cuando este dorada las patatas se unen y en ese momento añadimos un poco de queso y dejamos que se funda unos segundos, bajamos el fuego y añadimos el resto de los ingredientes siendo la mozzarella el ultimo ingrediente.</li>
+                            <li>Tapamos la sartén con una tapa y dejamos que se funda el queso, cuando esto este destapamos para que pierda la humedad y se tueste la patata de nuevo para poder sacarla.</li>
+                            <li>El truco esta en saber cuando está terminada. Lo sabremos cuando al mover la sartén se mueve toda la pizza a la vez.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">39</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">38</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">19</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Calorías</span>
+                                <span class="nutrition-value">496</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mixtas -->
+            <div class="recipe-card show" data-category="mixtas">
+                <div class="recipe-header">
+                    <h2>Hamburguesas de Atún y Zanahoria</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270352353-a83a51d998e8412ba13d145491cd0b5b.jpg" alt="Hamburguesas de Atún y Zanahoria" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>200 gr de atún al natural</li>
+                            <li>70 gr zanahoria</li>
+                            <li>1 huevo +1 clara</li>
+                            <li>2 cdra cebollino</li>
+                            <li>pimentón</li>
+                            <li>sal/pimienta</li>
+                            <li>200 gr tomate</li>
+                            <li>2 diente de ajo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Rallamos la zanahoria, picamos el cebollino.</li>
+                            <li>En un bol mezclamos la zanahoria,cebollino, atún, huevo y la clara, pimienta y salpimentamos al gusto.</li>
+                            <li>Hacemos una masa y albondigas algo grandes con ella.</li>
+                            <li>Ponemos un sartén antiadherente y a fuego medio y cuando este caliente echamos las bolas y con la espátula aplastamos y damos forma de hamburguesas.</li>
+                            <li>Acompañamos de una ensalada de tomate y ajo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">64</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">23</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-card show" data-category="mixtas">
+                <div class="recipe-header">
+                    <h2>Tallarines Benedictinos</h2>
+                </div>
+                <img src="https://bigmodel-us3-prod-agent.cn-wlcb.ufileos.com/1765270341940-85d88407806846628d7d520f832ca5d5.jpg" alt="Tallarines Benedictinos" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="ingredients">
+                        <h3>Ingredientes:</h3>
+                        <ul>
+                            <li>300gr de calabacín</li>
+                            <li>10 tomates Cherry</li>
+                            <li>3 diente ajos</li>
+                            <li>2 huevos</li>
+                            <li>100gr jamón serrano</li>
+                            <li>2 cdra aove</li>
+                            <li>3 cdra salsa soja</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preparation">
+                        <h3>Preparación:</h3>
+                        <ul>
+                            <li>Con una mandolina laminamos el calabacín a lo largo y después lo cortamos con un cuchillo para hacer forma de tallarines.</li>
+                            <li>Picamos los diente de ajos.</li>
+                            <li>Cocemos los huevos 5 minutos exactamente para que nos quede la yema sin cuajar, después los metemos en agua con hielo y pelamos. (igual que en la foto)</li>
+                            <li>Bañamos los huevos en la salsa de soja y dejamos marinar media hora y le daremos vueltas cada 10 minutos.</li>
+                            <li>En una sartén, con 2 cdra de aove pochamos a fuego bajo los tomates hasta que estén tostados por todos lados.</li>
+                            <li>Añadimos los ajos picados y el jamón, dejamos tostar.</li>
+                            <li>Añadimos los tallarines, dejamos dorar y que se mezcle con todos los sabores unos 4 minutos aproximadamente.</li>
+                            <li>Retiramos y emplamamos.</li>
+                            <li>Por ultimo añadimos los huevos encima y disfrutamos.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition">
+                        <h4>Nutrición por porción:</h4>
+                        <div class="nutrition-data">
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Proteínas</span>
+                                <span class="nutrition-value">40</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Hidratos</span>
+                                <span class="nutrition-value">10</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-label">Grasas</span>
+                                <span class="nutrition-value">29</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-    
-    <footer>
-        <div class="container">
-            <div class="contact-info">
-                <h3>LA MANZANA PROHIBIDA</h3>
-                <p>Florentino cuevillas nº6 Ourense</p>
-                <p>Teléfono: 615 10 83 95</p>
-            </div>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-            </div>
+        
+        <div class="contact-info">
+            <h3>LA MANZANA PROHIBIDA</h3>
+            <p>Florentino cuevillas nº6 Ourense</p>
+            <p>telf. 615 10 83 95</p>
         </div>
-    </footer>
+    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
+            const categoryButtons = document.querySelectorAll('.category-btn');
             const recipeCards = document.querySelectorAll('.recipe-card');
-            const searchInput = document.getElementById('searchInput');
-            const recipesCount = document.getElementById('recipesCount');
-            const noResults = document.getElementById('noResults');
             
-            // Función para filtrar recetas
-            function filterRecipes(filterValue, searchValue = '') {
-                let visibleCount = 0;
-                
-                recipeCards.forEach(card => {
-                    const category = card.getAttribute('data-category');
-                    const title = card.querySelector('h2').textContent.toLowerCase();
-                    const ingredients = card.querySelector('.ingredients-list').textContent.toLowerCase();
-                    
-                    // Comprobar si la receta coincide con el filtro y la búsqueda
-                    const matchesFilter = filterValue === 'all' || category === filterValue;
-                    const matchesSearch = searchValue === '' || 
-                                          title.includes(searchValue.toLowerCase()) || 
-                                          ingredients.includes(searchValue.toLowerCase());
-                    
-                    if (matchesFilter && matchesSearch) {
-                        card.classList.remove('hidden');
-                        visibleCount++;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-                
-                // Actualizar contador de recetas
-                if (filterValue === 'all' && searchValue === '') {
-                    recipesCount.textContent = 'Mostrando todas las recetas';
-                } else if (searchValue !== '') {
-                    recipesCount.textContent = `Se encontraron ${visibleCount} recetas para "${searchValue}"`;
-                } else {
-                    const filterText = filterButtons[Array.from(filterButtons).findIndex(btn => btn.getAttribute('data-filter') === filterValue)].textContent.trim();
-                    recipesCount.textContent = `Mostrando ${visibleCount} recetas de ${filterText}`;
-                }
-                
-                // Mostrar u ocultar mensaje de no resultados
-                if (visibleCount === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
-            }
-            
-            // Event listeners para los botones de filtro
-            filterButtons.forEach(button => {
+            categoryButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Actualizar botón activo
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    const category = this.getAttribute('data-category');
+                    
+                    // Actualizar botones activos
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
                     // Filtrar recetas
-                    const filterValue = this.getAttribute('data-filter');
-                    filterRecipes(filterValue, searchInput.value);
-                });
-            });
-            
-            // Event listener para la búsqueda
-            searchInput.addEventListener('input', function() {
-                const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-                filterRecipes(activeFilter, this.value);
-            });
-            
-            // Event listeners para los botones de "Ver receta completa"
-            const viewRecipeButtons = document.querySelectorAll('.view-recipe-btn');
-            viewRecipeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const card = this.closest('.recipe-card');
-                    const title = card.querySelector('h2').textContent;
-                    
-                    // Simulación de vista detallada (en una implementación real, esto abriría una página modal o una nueva página)
-                    alert(`Vista detallada de: ${title}\n\nEn una implementación completa, esto abriría una vista expandida con todos los detalles de la receta.`);
+                    recipeCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.classList.add('show');
+                        } else {
+                            card.classList.remove('show');
+                        }
+                    });
                 });
             });
         });
